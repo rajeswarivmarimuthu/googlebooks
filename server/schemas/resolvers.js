@@ -1,14 +1,13 @@
 const { AuthenticationError } = require('apollo-server-express');
 const { User } = require('../models');
-const { findOneAndUpdate } = require('../models/User');
 const { signToken } = require('../utils/auth');
 
 
 const resolvers = {
-    Query : {
-    user: async (parent,args, context) => {
+    Query: {
+    getUser: async (parent,args, context) => {
         if (context.user) {
-            const user = await User.findOne({$or: [{ _id: context.user._id}, { username: context.user.username}],})
+            const user = await User.findById({$or: [{ _id: context.user._id}],})
                                     .populate('Book');
             return {user};
         }
@@ -36,7 +35,7 @@ const resolvers = {
 
         //add user to the system
         createUser: async (parent, {username, email, password}) => {
-            const user = await User.create ({username, email, password});
+            const user = await User.create({username, email, password});
             const token = signToken(user);
             return {token, user};
         },

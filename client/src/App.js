@@ -9,7 +9,7 @@ import {
   ApolloProvider,
   createHttpLink,
 } from '@apollo/client';
-import {setContext} from '@apollo/client/link/context'
+import {setContext} from '@apollo/client/link/context';
 
 //import modules needed for pages
 import SearchBooks from './pages/SearchBooks';
@@ -17,8 +17,8 @@ import SavedBooks from './pages/SavedBooks';
 import Navbar from './components/Navbar';
 
 const httpLink = createHttpLink({
-  uri: 'graphql',
-})
+  uri: '/graphql',
+});
 
 // Leveraging applollo setcontext method for authention header
 const authLink = setContext ((_,{headers}) => {
@@ -42,7 +42,6 @@ function App() {
     <ApolloProvider client={client}>
       <Router>
         <div>
-          <StoreProvider>
             <Navbar />
             <Routes>
               <Route 
@@ -58,7 +57,6 @@ function App() {
                 element={<h1 className='display-2'>Wrong page!</h1>}
               />
             </Routes>
-          </StoreProvider>
         </div>
       </Router>
     </ApolloProvider>
