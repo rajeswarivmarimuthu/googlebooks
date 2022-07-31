@@ -6,10 +6,11 @@ const {authMiddleware} = require('./utils/auth');
 const {typeDefs, resolvers} = require('./schemas');
 const db = require('./config/connection');
 
-
+// Setting up express app 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Instantiating ApolloServer 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
@@ -24,6 +25,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../client/build')));
 }
 
+//Serve build/index.html when application is accessed at root
 app.get ('/', (req,res)=>{
   res.sendFile(path.join(__direname, '../client/build/index.html'));
 });
