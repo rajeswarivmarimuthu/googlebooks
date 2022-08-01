@@ -22,7 +22,6 @@ const httpLink = createHttpLink({
 
 // Leveraging applollo setcontext method for authention header
 const authLink = setContext ((_,{ headers }) => {
-  console.log (headers);
   const token = localStorage.getItem('id_token');
   return {
     headers:{

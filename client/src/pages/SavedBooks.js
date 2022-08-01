@@ -10,13 +10,10 @@ import { removeBookId } from '../utils/localStorage';
 import Auth from '../utils/auth';
 
 const SavedBooks = () => {
-  //const [userData, setUserData] = useState({});
-
-  const { loading, data } = useQuery(QUERY_ME);
   
-  console.log('from query_me', data?.me);
+  const { loading, data } = useQuery(QUERY_ME);
   const userData = data?.me || [];  
-  console.log('userData', userData);
+   
 
   const [deleteBook, { error }] = useMutation(DELETE_BOOK);
 
@@ -26,7 +23,7 @@ const SavedBooks = () => {
 
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
-    console.log ('*** Bookid', bookId);
+    
 
     if (!token) {
       return false;
@@ -40,9 +37,6 @@ const SavedBooks = () => {
       //setUserData(data);
       // upon success, remove book's id from localStorage
       removeBookId(bookId);
-      setTimeout(() => {
-        window.location.assign('/saved');
-      }, 3000);
       } 
       catch (err) {
       console.error(err);

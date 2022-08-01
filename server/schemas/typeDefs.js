@@ -1,5 +1,7 @@
 const { gql } = require('apollo-server-express');
 
+// definition of types for graphQL 
+
 const typeDefs = gql `
 type User {
     _id: ID

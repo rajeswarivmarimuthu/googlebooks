@@ -33,14 +33,12 @@ const resolvers = {
         //add user to the system
         createUser: async (parent, {username, email, password}) => {
             const user = await User.create({username, email, password});
-            console.log ('**** In createUser', user)
             const token = signToken(user);
             return { token, user };
         },
 
         //code to save book to user profile
         saveBook: async (parent, args, context) => {
-            console.log(args, context);
             if (context.user) {
             const newBook = await User.findOneAndUpdate (
                 {_id: context.user._id },

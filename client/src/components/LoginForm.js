@@ -33,7 +33,6 @@ const LoginForm = (props) => {
       const {data} = await login({
         variables: {...userFormData}
       });
-      console.log('login data ', data)
       Auth.login(data.login.token);
 
     } catch (err) {
