@@ -25,9 +25,9 @@ Hosted
 ## Usage
 Contributors are welcome!! Only way to use it for now is to clone/fork it to local to use it. This application has both client and server in the same repo. Once cloned to local, you can use below scripts build and execute. 
 
-Install npm packages: ```npm run install```
-Build Application: ```npm run build```
-Run Application: ```npm run develop```. This will start both client and server! 
+Install npm packages: ```npm run install```</br>
+Build Application: ```npm run build```</br>
+Run Application: ```npm run develop```. This will start both client and server! </br>
 Run Server ONLY: ```npm start```
 
 Once you validate, tag me in the PR. I will review and merge to make your into the application!! 
