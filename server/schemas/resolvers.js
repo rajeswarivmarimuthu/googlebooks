@@ -1,20 +1,17 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User } = require('../models');
+const { Book, User } = require('../models');
 const { signToken } = require('../utils/auth');
 
 
 const resolvers = {
     Query: {
-    getUser: async (parent,args, context) => {
-        if (context.user) {
-            const user = await User.findById({$or: [{ _id: context.user._id}],})
-                                    .populate('Book');
-            return {user};
-        }
-        throw new AuthenticationError('Cannot find a user with this id/username');
-    
-       }
-    },
+		me: async (parent, args, context) => {
+			if (context.user) {
+				return User.findOne({ _id: context.user._id }).populate("savedBooks");
+			}
+			throw new AuthenticationError("You need to be logged in!");
+		},
+	},
         
     Mutation: {
         //login credentials validation
@@ -24,7 +21,7 @@ const resolvers = {
                 throw new AuthenticationError ('Incorrect Credentials');
             }
 
-            const correctPw = await User.isCorrectPassword(password);
+            const correctPw = await user.isCorrectPassword(password);
             if(!correctPw) {
                 throw new AuthenticationError ('Incorrect Credentials');
             }
@@ -36,15 +33,16 @@ const resolvers = {
         //add user to the system
         createUser: async (parent, {username, email, password}) => {
             const user = await User.create({username, email, password});
+            console.log ('**** In createUser', user)
             const token = signToken(user);
-            return {token, user};
+            return { token, user };
         },
 
         //code to save book to user profile
         saveBook: async (parent, args, context) => {
             console.log(args, context);
             if (context.user) {
-            const newBook = await findOneAndUpdate (
+            const newBook = await User.findOneAndUpdate (
                 {_id: context.user._id },
                 {
                     $addToSet: {
@@ -59,18 +57,19 @@ const resolvers = {
                     },
                     {new: true},   
             );
-            return (newBook);
+            return newBook;
             }
             throw new AuthenticationError ('User not found');
         }, 
 
         //function to delete book from user profile
-        deleteBook: async (parent, {bookId},context) => {
-            console.log(args, context);
+        deleteBook: async (parent, {bookId} ,context) => {
+            console.log('***in deletebook', bookId);
+
             if (context.user) {
-                const removedBook = await findOneAndUpdate (
-                    {id:context.user._id},
-                    {$pull: {savedBooks:{bookId}}},
+                const removedBook = await User.findOneAndUpdate (
+                    {_id:context.user._id},
+                    {$pull: {savedBooks:{ bookId }}},
                     {new: true}
                 )
                 return(removedBook);
